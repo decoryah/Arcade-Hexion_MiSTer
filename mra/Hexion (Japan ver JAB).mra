@@ -1,0 +1,56 @@
+<misterromdescription>
+    <name>Hexion (Japan ver JAB)</name>
+    <setname>hexion</setname>
+    <mameversion>0289</mameversion>
+    <year>1992</year>
+    <manufacturer>Konami</manufacturer>
+    <players>2</players>
+    <joystick>8</joystick>
+    <rotation>horizontal</rotation>
+    <rbf>hexion</rbf>
+    <platform>Hexion</platform>
+
+    <!--
+      The image of the Hexion core (rtl/hexion_loader.sv, tools/hexion_rom.py), the same layout for both sets:
+        0x000000  0x20000  maincpu  the Z80 program
+        0x020000  0x80000  tiles    the two tile ROMs (MAME's "tiles": the first half, then the second)
+        0x0A0000  0x40000  oki      the MSM6295's samples
+        0x0E0000  0x00300  proms    red, green, blue
+        0x0E0300  0x00001  board    0 the Konami board (K051649), 1 the bootleg (a second MSM6295)
+        0x100000  0x40000  oki2     the bootleg's second MSM6295 (the bootleg only)
+      Expects the MAME 0.289 merged romset or the split sets: parts are found by name and CRC.
+      address= is the fast load: a recent Main_MiSTer copies the image into the DDR3 at that byte and the core reads it from there
+      (rtl/hexion_fastload.sv); an older one streams it.
+    -->
+
+    <!--
+      DIP switches (ioctl index 254): byte 0 is DSW1 (f400), byte 1 DSW2 (f401), byte 2 DSW3 (f440), bit for bit as MAME reads them;
+      a 1 is "off". MAME's defaults: FF, 4F, FF.
+    -->
+    <switches default="FF,4F,FF" base="16">
+        <dip bits="0,3" name="Coin A" ids="Free Play,4C/3C,4C/1C,3C/4C,3C/2C,3C/1C,2C/5C,2C/3C,2C/1C,1C/7C,1C/6C,1C/5C,1C/4C,1C/3C,1C/2C,1C/1C"/>
+        <dip bits="4,7" name="Coin B" ids="Free Play,4C/3C,4C/1C,3C/4C,3C/2C,3C/1C,2C/5C,2C/3C,2C/1C,1C/7C,1C/6C,1C/5C,1C/4C,1C/3C,1C/2C,1C/1C"/>
+        <dip bits="12,14" name="Difficulty" ids="8 (Hardest),7 (Very Hard),6 (Hard),5 (Medium Hard),4 (Medium),3 (Easy),2 (Very Easy),1 (Easiest)"/>
+        <dip bits="15" name="Demo Sounds" ids="On,Off"/>
+        <dip bits="16" name="Flip Screen" ids="On,Off"/>
+        <dip bits="18" name="Service Mode" ids="On,Off"/>
+    </switches>
+
+    <buttons names="Rotate Left,Rotate Right,Start,Coin" default="A,B,Start,Select"/>
+
+    <rom index="0" zip="hexion.zip" md5="None" address="0x32000000">
+        <!-- maincpu -->
+        <part name="122__j_a__b01.16f" crc="eabc6dd1"/>
+        <!-- tiles -->
+        <part name="122a07.1h" crc="22ae55e3"/>
+        <part name="122a06.1g" crc="438f4388"/>
+        <!-- oki -->
+        <part name="122a05.2f" crc="bcc831bf"/>
+        <!-- proms: red, green, blue -->
+        <part name="122a04.10b" crc="506eb8c6"/>
+        <part name="122a03.11b" crc="590c4f64"/>
+        <part name="122a02.13b" crc="5734305c"/>
+        <!-- board: Konami -->
+        <part>00</part>
+    </rom>
+</misterromdescription>

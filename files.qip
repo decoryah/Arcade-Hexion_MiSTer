@@ -1,0 +1,29 @@
+set_global_assignment -name SYSTEMVERILOG_FILE Hexion.sv
+set_global_assignment -name SDC_FILE Hexion.sdc
+set_global_assignment -name QIP_FILE rtl/pll.qip
+
+# the machine
+set_global_assignment -name SEARCH_PATH rtl
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_ram.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_core.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_video.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_scc.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_oki.sv
+
+# the MiSTer platform layer
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_sdram.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_loader.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_fastload.sv
+set_global_assignment -name SYSTEMVERILOG_FILE rtl/hexion_standby.sv
+
+# tv80 (MIT, Guy Hutchison), with the clock-enable wrapper tv80s_cen.v (modules/VENDOR.md); TV80_REFRESH builds its R register,
+# which the game reads for random numbers (LD A,R) and MAME counts on every opcode fetch and interrupt
+set_global_assignment -name VERILOG_MACRO "TV80_REFRESH=1"
+set_global_assignment -name VERILOG_FILE modules/cpu-tv80/tv80_alu.v
+set_global_assignment -name VERILOG_FILE modules/cpu-tv80/tv80_core.v
+set_global_assignment -name VERILOG_FILE modules/cpu-tv80/tv80_mcode.v
+set_global_assignment -name VERILOG_FILE modules/cpu-tv80/tv80_reg.v
+set_global_assignment -name VERILOG_FILE modules/cpu-tv80/tv80s_cen.v
+
+# rmonic79's CRT Adjust (GPL-3.0-or-later, modules/VENDOR.md)
+set_global_assignment -name SYSTEMVERILOG_FILE modules/crt-adjust/crt_adjust.sv
